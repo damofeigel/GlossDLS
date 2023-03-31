@@ -18,43 +18,56 @@ Gramática de las figuras:
     | Encimar <Fig> <Fig>
 -}
 
-
-data Dibujo a = Borrar -- Completar
-    deriving (Eq, Show)
+data Dibujo a = Figura a | Rotar (Dibujo a) | Espejar (Dibujo a) 
+            | Rot45 (Dibujo a) | Apilar Float Float (Dibujo a) (Dibujo a)
+            | Juntar Float Float (Dibujo a) (Dibujo a)
+            | Encimar (Dibujo a) (Dibujo a) 
+            deriving(Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
 
 -- Construcción de dibujo. Abstraen los constructores.
 
-figura = undefined
+figura :: a -> Dibujo a
+figura = Figura 
 
-rotar = undefined
+rotar :: Dibujo a -> Dibujo a
+rotar = Rotar
 
-espejar = undefined
+espejar :: Dibujo a -> Dibujo a
+espejar = Espejar
 
-rot45 = undefined
+rot45 :: Dibujo a -> Dibujo a
+rot45 = Rot45
 
-apilar = undefined
+apilar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
+apilar = Apilar 
 
-juntar = undefined
+juntar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
+juntar = Juntar
 
-encimar = undefined
+encimar :: Dibujo a -> Dibujo a -> Dibujo a
+encimar = Encimar
 
 
 -- Rotaciones de múltiplos de 90.
-r180 = undefined
+r180 :: Dibujo a -> Dibujo a
+r180 dib = rotar (rotar dib)
 
 r270 :: Dibujo a -> Dibujo a
-r270 = undefined
+r270 dib = rotar (rotar (rotar dib))
 
--- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
-(.-.) = undefined
+-- Pone el primer dibujo arriba del segundo, ambos ocupan el mismo espacio.
+(.-.) :: Dibujo a -> Dibujo a -> Dibujo a
+(.-.) = apilar 1.0 1.0 
 
--- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
-(///) = undefined
+-- Pone un dibujo al lado del otro, ambos ocupan el mismo espacio.
+(///) :: Dibujo a -> Dibujo a -> Dibujo a
+(///) = juntar 1.0 1.0
 
--- Superpone una figura con otra.
-(^^^) = undefined
+-- Superpone un dibujo con otro.
+(^^^) :: Dibujo a -> Dibujo a -> Dibujo a
+(^^^) = encimar
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto = undefined
@@ -73,7 +86,18 @@ foldDib :: (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) ->
        (Float -> Float -> b -> b -> b) -> 
        (b -> b -> b) ->
        Dibujo a -> b
-foldDib = undefined
+foldDib fig _ _ _ _ _ _ (Figura dib) = fig dib 
+foldDib fig rot esp rot45 api jut enc (Rotar dib) = rot (foldDib fig rot esp rot45 api jut enc dib)
+foldDib fig rot esp rot45 api jut enc (Espejar dib) = esp (foldDib fig rot esp rot45 api jut enc dib)
+foldDib fig rot esp rot45 api jut enc (Rot45 dib) = rot45 (foldDib fig rot esp rot45 api jut enc dib)
+foldDib fig rot esp rot45 api jut enc (Apilar x y dib1 dib2) = api x y (foldDib fig rot esp rot45 api jut enc dib1)
+                                                                       (foldDib fig rot esp rot45 api jut enc dib2)
+
+foldDib fig rot esp rot45 api jut enc (Juntar x y dib1 dib2) = jut x y (foldDib fig rot esp rot45 api jut enc dib1)
+                                                                       (foldDib fig rot esp rot45 api jut enc dib2)
+                                                                       
+foldDib fig rot esp rot45 api jut enc (Encimar dib1 dib2) = enc (foldDib fig rot esp rot45 api jut enc dib1)
+                                                                (foldDib fig rot esp rot45 api jut enc dib2)                                                                       
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
