@@ -29,7 +29,7 @@ data Dibujo a = Figura a | Rotar (Dibujo a) | Espejar (Dibujo a)
 -- Construcción de dibujo. Abstraen los constructores.
 
 figura :: a -> Dibujo a
-figura = Figura 
+figura = Figura
 
 rotar :: Dibujo a -> Dibujo a
 rotar = Rotar
@@ -70,7 +70,8 @@ r270 dib = rotar (rotar (rotar dib))
 (^^^) = encimar
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
-cuarteto = undefined
+cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
+cuarteto d1 d2 d3 d4 = (///) ((.-.) d1 d2) ((.-.) d3 d4)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 = undefined
@@ -101,7 +102,15 @@ foldDib fig rot esp rot45 api jut enc (Encimar dib1 dib2) = enc (foldDib fig rot
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib = undefined
+mapDib = undefined   
 
 -- Junta todas las figuras básicas de un dibujo.
-figuras = undefined
+-- Capaz se puede usar foldDib!
+figuras :: Dibujo a -> [a]
+figuras (Figura dib) = [dib]
+figuras (Rotar dib) = figuras dib
+figuras (Espejar dib) = figuras dib
+figuras (Rot45 dib) = figuras dib
+figuras (Apilar x y dib1 dib2) = figuras dib1 ++ figuras dib2
+figuras (Juntar x y dib1 dib2) = figuras dib1 ++ figuras dib2
+figuras (Encimar dib1 dib2) = figuras dib1 ++ figuras dib2
