@@ -102,8 +102,16 @@ foldDib fig rot esp rot45 api jut enc (Encimar dib1 dib2) = enc (foldDib fig rot
                                                                 (foldDib fig rot esp rot45 api jut enc dib2)
 
 -- Demostrar que `mapDib figura = id`
+-- Deberia poder hacerse con foldDib... Quizas con lambdaCase
+-- Esta version con pattern matching tira error
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib fun dib = undefined
+mapDib fun (Figura dib) = Figura dib   
+mapDib fun (Rotar dib) = Rotar (mapDib fun dib)
+mapDib fun (Espejar dib) = Espejar (mapDib fun dib)
+mapDib fun (Rot45 dib) = Rot45 (mapDib fun dib)
+mapDib fun (Apilar x y dib1 dib2) = Apilar x y (mapDib fun dib1) (mapDib fun dib2)
+mapDib fun (Juntar x y dib1 dib2) = Juntar x y (mapDib fun dib1) (mapDib fun dib2)
+mapDib fun (Encimar dib1 dib2) = Encimar (mapDib fun dib1) (mapDib fun dib2)
 
 -- Junta todas las figuras básicas de un dibujo.
 
