@@ -19,8 +19,11 @@ Gramática de las figuras:
 -}
 
 
-data Dibujo a = Borrar -- Completar
-    deriving (Eq, Show)
+data Dibujo a = Figura a | Rotar (Dibujo a) | Espejar (Dibujo a) 
+            | Rot45 (Dibujo a) | Apilar Float Float (Dibujo a) (Dibujo a)
+            | Juntar Float Float (Dibujo a) (Dibujo a)
+            | Encimar (Dibujo a) (Dibujo a) 
+        deriving(Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
 
@@ -53,7 +56,7 @@ r180 :: Dibujo a -> Dibujo a
 r180 dib = rotar(rotar dib)
 
 r270 :: Dibujo a -> Dibujo a
-r270 = rotar(r180 dib)
+r270 dib = rotar(r180 dib)
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
 (.-.) :: Dibujo a -> Dibujo a -> Dibujo a
@@ -69,7 +72,7 @@ r270 = rotar(r180 dib)
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto = (///) ((.-.) d1 d2) ((.-.) d3 d4)
+cuarteto d1 d2 d3 d4 = (///) ((.-.) d1 d2) ((.-.) d3 d4)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 = undefined
@@ -100,18 +103,19 @@ foldDib fig rot esp rot45 api jut enc (Encimar dib1 dib2) = enc (foldDib fig rot
 
 -- Demostrar que `mapDib figura = id`
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib = undefined
+mapDib fun dib = undefined
 
 -- Junta todas las figuras básicas de un dibujo.
+
 figuras :: Dibujo a -> [a]
-figuras dib =
-            foldDib
-            (: [])                              -- Figura 
-            id                                  -- Rotar
-            id                                  -- Espejar
-            id                                  -- Rot45
-            (\f1 f2 dib1 dib2 -> dib1 ++ dib2)  -- Apilar
-            (\f1 f2 dib1 dib2 -> dib1 ++ dib2)  -- Juntar
-            (++)                                -- Encimar
-            dib
+figuras =
+        foldDib
+        (: [])                              
+        id                                  
+        id                                  
+        id                                  
+        (\f1 f2 dib1 dib2 -> dib1 ++ dib2)  
+        (\f1 f2 dib1 dib2 -> dib1 ++ dib2)             
+        (++)             
+                              
 
