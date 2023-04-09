@@ -1,4 +1,4 @@
-{-# LANGUAGE LambdaCase #-}
+
 module Dibujo (
     Dibujo,
     figura, rotar, espejar, rot45, apilar, juntar, encimar,
@@ -19,36 +19,36 @@ Gramática de las figuras:
 -}
 
 
-data Dibujo a = Figura a | Rotar (Dibujo a) | Espejar (Dibujo a) 
+data Dibujo a = Figura a | Rotar (Dibujo a) | Espejar (Dibujo a)
             | Rot45 (Dibujo a) | Apilar Float Float (Dibujo a) (Dibujo a)
             | Juntar Float Float (Dibujo a) (Dibujo a)
-            | Encimar (Dibujo a) (Dibujo a) 
+            | Encimar (Dibujo a) (Dibujo a)
         deriving(Eq, Show)
 
 -- Agreguen los tipos y definan estas funciones
 
 -- Construcción de dibujo. Abstraen los constructores.
 
-figura :: a -> Dibujo a  
-figura = Figura 
+figura :: a -> Dibujo a
+figura = Figura
 
-rotar :: Dibujo a -> Dibujo a 
-rotar = Rotar 
+rotar :: Dibujo a -> Dibujo a
+rotar = Rotar
 
-espejar :: Dibujo a -> Dibujo a 
+espejar :: Dibujo a -> Dibujo a
 espejar = Espejar
 
-rot45 :: Dibujo a -> Dibujo a 
+rot45 :: Dibujo a -> Dibujo a
 rot45 = Rot45
 
-apilar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a 
+apilar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
 apilar = Apilar
 
-juntar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a 
-juntar = Juntar 
+juntar :: Float -> Float -> Dibujo a -> Dibujo a -> Dibujo a
+juntar = Juntar
 
-encimar :: Dibujo a -> Dibujo a -> Dibujo a 
-encimar = Encimar 
+encimar :: Dibujo a -> Dibujo a -> Dibujo a
+encimar = Encimar
 
 
 -- Rotaciones de múltiplos de 90.
@@ -60,15 +60,15 @@ r270 dib = rotar(r180 dib)
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
 (.-.) :: Dibujo a -> Dibujo a -> Dibujo a
-(.-.) = apilar 1.0 1.0 
+(.-.) = apilar 1.0 1.0
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
 (///) :: Dibujo a -> Dibujo a -> Dibujo a
-(///) = juntar 1.0 1.0 
+(///) = juntar 1.0 1.0
 
 -- Superpone una figura con otra.
 (^^^) :: Dibujo a -> Dibujo a -> Dibujo a
-(^^^) = encimar 
+(^^^) = encimar
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
@@ -84,8 +84,8 @@ ciclar = undefined
 -- Estructura general para la semántica (a no asustarse). Ayuda: 
 -- pensar en foldr y las definiciones de Floatro a la lógica
 foldDib :: (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) ->
-       (Float -> Float -> b -> b -> b) -> 
-       (Float -> Float -> b -> b -> b) -> 
+       (Float -> Float -> b -> b -> b) ->
+       (Float -> Float -> b -> b -> b) ->
        (b -> b -> b) ->
        Dibujo a -> b
 foldDib fig _ _ _ _ _ _ (Figura dib) = fig dib
@@ -105,7 +105,7 @@ foldDib fig rot esp rot45 api jut enc (Encimar dib1 dib2) = enc (foldDib fig rot
 -- Deberia poder hacerse con foldDib... Quizas con lambdaCase
 -- Esta version con pattern matching tira error
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
-mapDib fun (Figura dib) = Figura dib   
+mapDib fun (Figura dib) = fun dib
 mapDib fun (Rotar dib) = Rotar (mapDib fun dib)
 mapDib fun (Espejar dib) = Espejar (mapDib fun dib)
 mapDib fun (Rot45 dib) = Rot45 (mapDib fun dib)
@@ -118,12 +118,10 @@ mapDib fun (Encimar dib1 dib2) = Encimar (mapDib fun dib1) (mapDib fun dib2)
 figuras :: Dibujo a -> [a]
 figuras =
         foldDib
-        (: [])                              
-        id                                  
-        id                                  
-        id                                  
-        (\f1 f2 dib1 dib2 -> dib1 ++ dib2)  
-        (\f1 f2 dib1 dib2 -> dib1 ++ dib2)             
-        (++)             
-                              
-
+        (: [])
+        id
+        id
+        id
+        (\f1 f2 dib1 dib2 -> dib1 ++ dib2)
+        (\f1 f2 dib1 dib2 -> dib1 ++ dib2)
+        (++)
