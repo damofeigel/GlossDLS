@@ -1,10 +1,10 @@
 module FloatingPic (
     FloatingPic, Output,
     zero, half,
-    hlines, grid,
-    vacia
+    hlines, grid, add, multiply,
+    subs, neg, vacia
 ) where
-    
+
 import Graphics.Gloss
     (Vector, Picture, blank, line, pictures, rotate, scale, translate)
 import Graphics.Gloss.Data.Vector (argV, magV)
@@ -23,6 +23,18 @@ zero = (0,0)
 
 half :: Vector -> Vector
 half = (0.5 V.*)
+
+multiply :: Float -> Vector -> Vector
+multiply f = (f V.*)
+
+add :: Vector -> Vector -> Vector
+add v1 v2 = v1 V.+ v2
+
+subs :: Vector -> Vector -> Vector
+subs v1 v2 = v1 V.- v2
+
+neg :: Vector -> Vector
+neg = V.negate
 
 -- Infinitas lineas paralelas horizontales
 -- Desde (x, y) para arriba con un largo de mag

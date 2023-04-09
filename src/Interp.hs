@@ -7,41 +7,39 @@ module Interp (
 
 import Graphics.Gloss(Picture, Display(InWindow), makeColorI, color, pictures, translate, white, display)
 import Dibujo (Dibujo, foldDib, figura)
-import FloatingPic (FloatingPic, Output, grid, half)
-import Graphics.Gloss.Data.Point.Arithmetic as V
+import FloatingPic (FloatingPic, Output, grid, half, add, multiply, subs, neg)
+
 
 -- Interpretación de un dibujo
 -- formulas sacadas del enunciadoFloatingPic.
 -- No se si se puede, pero importe de nuevo aca half y el choclo ese de Gloss
 
 {-
-    TODO: * todo lo que tenga que ver con los puntos moverlo a Floating pics!!
-          * el dibujo feo esta mas feo de lo que deberia! esta chato!
+        TODO: el dibujo feo esta mas feo de lo que deberia! esta chato!
 -}
 
 interp :: Output a -> Output (Dibujo a)
 interp f = foldDib 
-    f                                                                          -- figura                                    
-    (\f x w h -> f (x V.+ w) h (V.negate w))                                   -- Rotar
-    (\f x w h -> f (x V.+ w) (V.negate w) h )                                  -- espejar
-    (\f x w h -> f (x V.+ half(w V.+ h)) (half (w V.+ h)) (half (h V.- w)))    -- rotar45
-    auxApilar                                                                  -- Apilar
-    auxJuntar                                                                  -- Juntar
-    (\f g x w h -> pictures[f x w h, g x w h])                                 -- encimar
+    f                                                                            -- figura                                    
+    (\f x w h -> f (add x w) h (neg w))                                          -- Rotar
+    (\f x w h -> f (add x w) (neg w) h )                                         -- espejar
+    (\f x w h -> f (add x (half(add w h))) (half (add w h)) (half (subs h w)))   -- rotar45
+    auxApilar                                                                    -- Apilar
+    auxJuntar                                                                    -- Juntar
+    (\f g x w h -> pictures[f x w h, g x w h])                                   -- encimar
  
 
 auxApilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic         
-auxApilar n m f g x w h = pictures [f (x V.+ h') w (r V.* h),
-                                    g x w h']
-                        where r' = n / (m Prelude.+ n)       
-                              r  = m / (m Prelude.+ n)
-                              h' = r V.* h  
+auxApilar n m f g x w h = pictures [f (add x h') w (multiply r h), g x w h']
+                        where r' = n / (m + n)       
+                              r  = m / (m + n)
+                              h' = multiply r h  
                               
 auxJuntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
-auxJuntar n m f g x w h = pictures [f x  w' h, g (x V.+ w') (r' V.* w) h]
-                        where r' = n / (m Prelude.+ n)       
-                              r  = m / (m Prelude.+ n)
-                              w' = r V.* w  
+auxJuntar n m f g x w h = pictures [f x  w' h, g (add x w') (multiply r' w) h]
+                        where r' = n / (m + n)       
+                              r  = m / (m + n)
+                              w' = multiply r w  
 
 
 -- Configuración de la interpretación
