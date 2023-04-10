@@ -53,29 +53,29 @@ interpBasicaSinColor Efe x y w = line . map (x V.+) $ [
 interpBas :: Output Basica
 interpBas (b, c) x y w = colorear c $ interpBasicaSinColor b x y w
 
--- Diferentes tests para ver que estÃ©n bien las operaciones
+-- Diferentes tests para ver que estén bien las operaciones
 figRoja :: BasicaSinColor -> Dibujo Basica
 figRoja b = figura (b, Rojo)
 
 figAzul :: BasicaSinColor -> Dibujo Basica
 figAzul b = figura (b, Azul)
 
--- DeberÃ­a mostrar un rectÃ¡ngulo azul arriba de otro rojo,
+-- Debería mostrar un rectángulo azul arriba de otro rojo,
 -- conteniendo toda la grilla dentro
 apilados :: BasicaSinColor -> Dibujo Basica
 apilados b = apilar 1 1 (figAzul b) (figRoja b)
 
--- DeberÃ­a mostrar un rectÃ¡ngulo azul arriba de otro rojo,
+-- Debería mostrar un rectángulo azul arriba de otro rojo,
 -- conteniendo toda la grilla dentro el primero ocupando 3/4 de la grilla
 apilados2 :: BasicaSinColor -> Dibujo Basica
 apilados2 b = apilar 1 3 (figAzul b) (figRoja b)
 
--- DeberÃ­a mostrar un rectÃ¡ngulo azul a derecha de otro rojo,
+-- Debería mostrar un rectángulo azul a derecha de otro rojo,
 -- conteniendo toda la grilla dentro
 juntados :: BasicaSinColor -> Dibujo Basica
 juntados b = juntar 1 1 (figAzul b) (figRoja b)
 
--- DeberÃ­a mostrar un rectÃ¡ngulo azul a derecha de otro rojo,
+-- Debería mostrar un rectángulo azul a derecha de otro rojo,
 -- conteniendo toda la grilla dentro el primero ocupando 3/4 de la grilla
 juntados2 :: BasicaSinColor -> Dibujo Basica
 juntados2 b = juntar 1 3 (figAzul b) (figRoja b)
@@ -89,12 +89,12 @@ flipante2 :: BasicaSinColor -> Dibujo Basica
 flipante2 b = espejar $ apilados2 b
 
 row :: [Dibujo a] -> Dibujo a
-row [] = error "row: no puede ser vacio"
+row [] = error "row: no puede ser vacío"
 row [d] = d
 row (d:ds) = juntar (fromIntegral $ length ds) 1 d (row ds)
 
 column :: [Dibujo a] -> Dibujo a
-column [] = error "column: no puede ser vacio"
+column [] = error "column: no puede ser vacío"
 column [d] = d
 column (d:ds) = apilar (fromIntegral $ length ds) 1 d (column ds)
 
@@ -121,4 +121,3 @@ feoConf = Conf {
     name = "Feo",
     pic = interp interpBas testAll
 }
-

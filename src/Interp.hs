@@ -33,7 +33,7 @@ auxApilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
 auxApilar n m f g x w h = pictures [f (add x h') w (multiply r h), g x w h']
                         where r' = n / (m + n)       
                               r  = m / (m + n)
-                              h' = multiply r h  
+                              h' = multiply r' h  
                               
 auxJuntar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic
 auxJuntar n m f g x w h = pictures [f x  w' h, g (add x w') (multiply r' w) h]
