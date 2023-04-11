@@ -23,7 +23,7 @@ interp f = foldDib
     f                                                                            -- figura                                    
     (\f x w h -> f (add x w) h (neg w))                                          -- Rotar
     (\f x w h -> f (add x w) (neg w) h )                                         -- espejar
-    (\f x w h -> f (add x (half(add w h))) (half (add w h)) (half (subs h w)))   -- rotar45
+    (\f x w h -> f (add x (half (add w h))) (half (add w h)) (half (subs h w)))   -- rotar45
     auxApilar                                                                    -- Apilar
     auxJuntar                                                                    -- Juntar
     (\f g x w h -> pictures[f x w h, g x w h])                                   -- encimar
