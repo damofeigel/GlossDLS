@@ -10,24 +10,12 @@ module Dibujo (
 ) where
 
 
-{-
-Gramática de las figuras:
-<Fig> ::= Figura <Bas> | Rotar <Fig> | Espejar <Fig> | Rot45 <Fig>
-    | Apilar <Float> <Float> <Fig> <Fig> 
-    | Juntar <Float> <Float> <Fig> <Fig> 
-    | Encimar <Fig> <Fig>
--}
-
-
 data Dibujo a = Figura a | Rotar (Dibujo a) | Espejar (Dibujo a)
             | Rot45 (Dibujo a) | Apilar Float Float (Dibujo a) (Dibujo a)
             | Juntar Float Float (Dibujo a) (Dibujo a)
             | Encimar (Dibujo a) (Dibujo a)
         deriving(Eq, Show)
 
--- Agreguen los tipos y definan estas funciones
-
--- Construcción de dibujo. Abstraen los constructores.
 
 figura :: a -> Dibujo a
 figura = Figura
@@ -104,8 +92,6 @@ foldDib fig rot esp rot45 api jut enc (Encimar dib1 dib2) = enc (foldDib fig rot
                                                                 (foldDib fig rot esp rot45 api jut enc dib2)
 
 -- Demostrar que `mapDib figura = id`
--- Deberia poder hacerse con foldDib... Quizas con lambdaCase
--- Esta version con pattern matching tira error
 mapDib :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
 mapDib fun (Figura dib) = fun dib
 mapDib fun (Rotar dib) = Rotar (mapDib fun dib)

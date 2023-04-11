@@ -8,8 +8,7 @@ import Dibujo (Dibujo, figura, foldDib, mapDib)
 type Pred a = a -> Bool
 
 -- Dado un predicado sobre básicas, cambiar todas las que satisfacen
--- el predicado por la figura básica indicada por el segundo argumento.
--- Falta ver que funciones irian en lugar de Apilar, Juntar y Encimar
+-- el predicado por la figura básica indicada por el segundo argumento
 cambiar :: Pred a -> (a -> Dibujo a) -> Dibujo a -> Dibujo a
 cambiar pred fun = mapDib (\case
                             x | pred x -> fun x
