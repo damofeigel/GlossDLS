@@ -1,10 +1,9 @@
-
--- Se puede usar LambdaCase (?)
+{-# LANGUAGE LambdaCase #-}
 module Pred (
   Pred,
   cambiar, anyDib, allDib, orP, andP
 ) where
-import Dibujo (Dibujo, foldDib, mapDib)
+import Dibujo (Dibujo, figura, foldDib, mapDib)
 
 type Pred a = a -> Bool
 
@@ -12,7 +11,9 @@ type Pred a = a -> Bool
 -- el predicado por la figura básica indicada por el segundo argumento.
 -- Falta ver que funciones irian en lugar de Apilar, Juntar y Encimar
 cambiar :: Pred a -> (a -> Dibujo a) -> Dibujo a -> Dibujo a
-cambiar pred = mapDib
+cambiar pred fun = mapDib (\case
+                            x | pred x -> fun x
+                              | otherwise -> figura x)
 
 -- Alguna básica satisface el predicado.
 anyDib :: Pred a -> Dibujo a -> Bool
