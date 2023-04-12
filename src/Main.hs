@@ -14,6 +14,10 @@ import Tests (testConf)
 configs :: [Conf]
 configs = [ejemploConf, feoConf, testConf, escherConf]
 
+-- Lista con los nombres de cada dibujo
+names :: [String]
+names = ["Ejemplo", "Feo", "Test", "Escher"]
+
 -- Dibuja el dibujo n
 initial' :: [Conf] -> String -> IO ()
 initial' [] n = do
@@ -24,7 +28,28 @@ initial' (c : cs) n =
     else
         initial' cs n
 
+-- Loop para manejar inputs del usuario
+handleInput :: IO ()
+handleInput = do
+    nombreDib <- getLine
+    case nombreDib of
+        "Ejemplo" -> initial ejemploConf 400
+        "Feo"     -> initial feoConf 400
+        "Test"    -> initial testConf 400
+        "Escher"  -> initial escherConf 400
+        "quit"    -> return ()
+        _ -> do
+            putStrLn $ "No hay un dibujo llamado " ++ nombreDib
+            handleInput
+
+-- Modo de uso: Una vez en ghci, llamas ":main 'Nombre del dibujo'" o ":main --lista"
 main :: IO ()
 main = do
     args <- getArgs
-    initial' configs $ head args
+    case args of
+        ["--lista"] -> do
+            mapM_ putStrLn names 
+            print "Que dibujo desea mostrar?"
+            handleInput
+        _           -> initial' configs $ head args
+            
