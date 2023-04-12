@@ -48,11 +48,11 @@ r270 dib = rotar(r180 dib)
 
 -- Pone una figura sobre la otra, ambas ocupan el mismo espacio.
 (.-.) :: Dibujo a -> Dibujo a -> Dibujo a
-(.-.) = apilar 1.0 1.0
+(.-.) = apilar 100.0 100.0
 
 -- Pone una figura al lado de la otra, ambas ocupan el mismo espacio.
 (///) :: Dibujo a -> Dibujo a -> Dibujo a
-(///) = juntar 1.0 1.0
+(///) = juntar 100.0 100.0
 
 -- Superpone una figura con otra.
 (^^^) :: Dibujo a -> Dibujo a -> Dibujo a
@@ -60,7 +60,7 @@ r270 dib = rotar(r180 dib)
 
 -- Dadas cuatro figuras las ubica en los cuatro cuadrantes.
 cuarteto :: Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a -> Dibujo a
-cuarteto d1 d2 d3 d4 = (///) ((.-.) d1 d2) ((.-.) d3 d4)
+cuarteto d1 d2 d3 d4 = (.-.) ((///) d1 d2) ((///) d3 d4)
 
 -- Una figura repetida con las cuatro rotaciones, superpuestas.
 encimar4 :: Dibujo a -> Dibujo a
@@ -69,7 +69,9 @@ encimar4 a = encimar (r270 a) (encimar (encimar a (rotar a)) (r180 a))
 -- Cuadrado con la misma figura rotada i * 90, para i ∈ {0, ..., 3}.
 -- No confundir con encimar4!
 ciclar :: Dibujo a -> Dibujo a
-ciclar a = juntar 1 1 (r270 a) (apilar 1 1 (r180 a) (juntar 1 1 a (rotar a)))
+--ciclar a = juntar 1 1 (r270 a) (apilar 1 1 (r180 a) (juntar 1 1 a (rotar a)))
+ciclar p = cuarteto p (rotar p ) (r180 p) (r270 p) 
+
 
 -- Estructura general para la semántica (a no asustarse). Ayuda: 
 -- pensar en foldr y las definiciones de Floatro a la lógica
