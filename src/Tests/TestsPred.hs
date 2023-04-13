@@ -1,4 +1,6 @@
-import Test.HUnit
+module Tests.TestsPred ( ) where
+    
+import Test.HUnit ( assertEqual, Test(TestList, TestCase) )
 
 import Pred (Pred, cambiar, anyDib, allDib, orP, andP)
 
@@ -24,7 +26,9 @@ expectedcambiar =
     "Espejar (Apilar 0.0 0.0 (Encimar (Rotar (Figura 1)) (Figura 2)) (Juntar 0.0 0.0 (Rot45 (Rotar (Figura 1))) (Rotar (Figura 3))))"
 
 testcambiar :: Test
-testcambiar = TestCase (assertEqual "cambiar" expectedcambiar (show $ cambiar predi (rotar . figura) dibujo))
+testcambiar = TestCase (assertEqual "cambiar" 
+                          expectedcambiar 
+                            (show $ cambiar predi (rotar . figura) dibujo))
 
 -- Test de anyDib
 
@@ -35,7 +39,8 @@ predianyDibFalse :: Eq a => Num a => Pred a
 predianyDibFalse a = a == 4
 
 testanyDibFalse :: Test
-testanyDibFalse = TestCase (assertEqual "anyDibFalse" False (anyDib predianyDibFalse dibujo))
+testanyDibFalse = TestCase (assertEqual "anyDibFalse" False 
+                                        (anyDib predianyDibFalse dibujo))
 
 -- Test de allDib
 
