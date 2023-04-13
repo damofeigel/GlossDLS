@@ -9,14 +9,14 @@ import Interp (Conf(name), initial)
 import Dibujos.Ejemplo (ejemploConf)
 import Dibujos.Feo (feoConf)
 import Dibujos.Escher (escherConf)
-import Tests (testConf)
+import Dibujos.GrillaNum (grillaConf)
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [ejemploConf, feoConf, testConf, escherConf]
+configs = [ejemploConf, feoConf, grillaConf, escherConf]
 
 -- Lista con los nombres de cada dibujo
 names :: [String]
-names = ["Ejemplo", "Feo", "Test", "Escher"]
+names = ["Ejemplo", "Feo", "Grilla", "Escher"]
 
 -- Dibuja el dibujo n
 initial' :: [Conf] -> String -> IO ()
@@ -35,7 +35,7 @@ handleInput = do
     case nombreDib of
         "Ejemplo" -> initial ejemploConf 400
         "Feo"     -> initial feoConf 400
-        "Test"    -> initial testConf 400
+        "Grilla"    -> initial grillaConf 400
         "Escher"  -> initial escherConf 400
         "quit"    -> return ()
         _ -> do
