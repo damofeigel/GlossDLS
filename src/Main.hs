@@ -35,10 +35,10 @@ handleInput = do
     case nombreDib of
         "Ejemplo" -> initial ejemploConf 400
         "Feo"     -> initial feoConf 400
-        "Grilla"    -> initial grillaConf 400
+        "Grilla"  -> initial grillaConf 400
         "Escher"  -> initial escherConf 400
         "quit"    -> return ()
-        _ -> do
+        _         -> do
             putStrLn $ "No hay un dibujo llamado " ++ nombreDib
             handleInput
 
