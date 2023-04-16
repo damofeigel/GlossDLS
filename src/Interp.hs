@@ -12,12 +12,6 @@ import FloatingPic (FloatingPic, Output, grid, half, add, multiply, subs, neg)
 
 -- Interpretación de un dibujo
 -- formulas sacadas del enunciadoFloatingPic.
--- No se si se puede, pero importe de nuevo aca half y el choclo ese de Gloss
-
-{-
-        TODO: el dibujo feo esta mas feo de lo que deberia! esta chato!
--}
-
 interp :: Output a -> Output (Dibujo a)
 interp f = foldDib 
     f                                                                            -- figura                                    

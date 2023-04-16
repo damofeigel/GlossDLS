@@ -104,7 +104,6 @@ mapDib fun (Juntar x y dib1 dib2) = Juntar x y (mapDib fun dib1) (mapDib fun dib
 mapDib fun (Encimar dib1 dib2) = Encimar (mapDib fun dib1) (mapDib fun dib2)
 
 -- Junta todas las figuras básicas de un dibujo.
-
 figuras :: Dibujo a -> [a]
 figuras =
         foldDib

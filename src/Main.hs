@@ -10,6 +10,7 @@ import Dibujos.Ejemplo (ejemploConf)
 import Dibujos.Feo (feoConf)
 import Dibujos.Escher (escherConf)
 import Dibujos.GrillaNum (grillaConf)
+
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
 configs = [ejemploConf, feoConf, grillaConf, escherConf]
@@ -28,7 +29,7 @@ initial' (c : cs) n =
     else
         initial' cs n
 
--- Loop para manejar inputs del usuario
+-- Loop para manejo de inputs del usuario
 handleInput :: IO ()
 handleInput = do
     nombreDib <- getLine
