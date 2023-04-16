@@ -50,7 +50,7 @@ escher n p =
             (dibujoU (figura p))
             (r270 (lado n (figura p)))             --(rotar (rotar(rotar (lado n (figura p)))))
             (rotar (esquina n (figura p)))
-            (r180 (lado n (figura p)))             --(rotar (rotar0(    lado n (figura p))))
+            (r180 (lado n (figura p)))             --(rotar (rotar (lado n (figura p))))
             (r180 (esquina n (figura p)))          --(rotar (rotar (esquina n (figura p))))
 
 
