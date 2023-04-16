@@ -2,7 +2,7 @@ module Dibujos.Escher (
     escherConf
 ) where
 
-import Graphics.Gloss (Picture, blank, line, pictures, polygon)
+import Graphics.Gloss (line, pictures, polygon)
 import Dibujo (Dibujo, figura, juntar, apilar, rot45, rotar, encimar, espejar, cuarteto, r270, r180, ciclar)
 import FloatingPic (Output, half, zero, vacia)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
@@ -19,7 +19,7 @@ dibujoU p = encimar (encimar p1 (rotar p1))
                 (encimar (r180 p1) (r270 p1)) 
         where p1 = espejar (rot45 p)
 
--- El dibujo t. t = over(fish, over(fish2, fish3))
+-- El dibujoT.
 dibujoT :: Dibujo Escher -> Dibujo Escher
 dibujoT p = encimar p (encimar p1 p2)
         where p1 = espejar (rot45 p)

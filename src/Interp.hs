@@ -13,15 +13,18 @@ import FloatingPic (FloatingPic, Output, grid, half, add, multiply, subs, neg)
 -- Interpretación de un dibujo
 -- formulas sacadas del enunciadoFloatingPic.
 interp :: Output a -> Output (Dibujo a)
-interp f = foldDib 
-    f                                                                            -- figura                                    
+interp f = 
+    foldDib 
+    f                                                                            -- Figura                                    
     (\f x w h -> f (add x w) h (neg w))                                          -- Rotar
     (\f x w h -> f (add x w) (neg w) h )                                         -- espejar
-    (\f x w h -> f (add x (half (add w h))) (half (add w h)) (half (subs h w)))   -- rotar45
+    (\f x w h -> f (add x (half (add w h))) (half (add w h)) (half (subs h w)))  -- Rot45
     auxApilar                                                                    -- Apilar
     auxJuntar                                                                    -- Juntar
-    (\f g x w h -> pictures[f x w h, g x w h])                                   -- encimar
+    (\f g x w h -> pictures[f x w h, g x w h])                                   -- Encimar
  
+ 
+ -- Funciones auxialiares para usar con foldDib en interp
 
 auxApilar :: Float -> Float -> FloatingPic -> FloatingPic -> FloatingPic         
 auxApilar n m f g x w h = pictures [f (add x h') w (multiply r h), g x w h']

@@ -1,6 +1,6 @@
-module Tests.TestsDibujo ( ) where
+module Tests.TestsDibujo () where
 
-import Test.HUnit ( assertEqual, Test(TestList, TestCase) )
+import Test.HUnit (assertEqual, Test(TestList, TestCase), runTestTT)
 
 import Dibujo (Dibujo, figura, rotar, espejar, rot45, apilar,
                 juntar, encimar, foldDib, mapDib, figuras)
@@ -44,11 +44,11 @@ expectedfoldDib = "Espejar (Apilar 0.0 0.0 (Encimar (Figura 1) (Figura 2)) (Junt
 
 dibujo :: Dibujo Int
 dibujo  = espejar (apilar 0 0 (encimar (figura 1) (figura 2))
-                                (juntar 0 0 (rot45 (figura 3)) (rotar (figura 4))))
+                            (juntar 0 0 (rot45 (figura 3)) (rotar (figura 4))))
 
 testfoldDib :: Test
 testfoldDib = TestCase (assertEqual "foldDib" expectedfoldDib
-                            (show $ foldDib figura rotar espejar rot45 apilar juntar encimar dibujo))
+                        (show $ foldDib figura rotar espejar rot45 apilar juntar encimar dibujo))
 
 -- Test de mapDib
 
@@ -76,6 +76,7 @@ expectedValuefiguras = sum [1,2,3,4]
 testfiguras :: Test
 testfiguras = TestCase (assertEqual "figuras" expectedValuefiguras 
                                     (sum (figuras dibujo)))
+                                    
 
 tests = TestList [testfigura, testrotar, testespejar, testrot45,
                     testapilar, testjuntar, testencimar, testfoldDib,

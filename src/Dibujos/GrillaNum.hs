@@ -2,17 +2,15 @@ module Dibujos.GrillaNum (
     grillaConf
 ) where
 
-import Dibujo
+import Dibujo (figura, Dibujo)
 import Graphics.Gloss
-    ( Vector, Rectangle(Rectangle), Picture(..),line, text, pictures, translate, scale)
+    (text, translate, scale)
 import Interp (Conf(..), interp)
 import FloatingPic (FloatingPic, Output)
 import Grilla (grilla)
-import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 
 fig :: String -> Dibujo String
 fig = figura
-
 
 testAll :: Dibujo String
 testAll = 
